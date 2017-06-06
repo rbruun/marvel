@@ -1,0 +1,25 @@
+.hero {
+    display: inline-flex;
+    flex-direction: row;
+}
+.selection {
+    position: relative;
+    top: 20px;
+}
+.mainrow {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 50px;
+}
+.details {
+    width: 150px;
+    font-family: sans-serif;
+    padding: 10px;
+    border: 2px solid black;
+}
+.image {
+    border: 2px solid black;
+    width: 150px;
+    padding: 0px;
+}
