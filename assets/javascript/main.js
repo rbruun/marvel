@@ -59,7 +59,7 @@
                 if (parseInt(data.data.count) > 0) {
                     $.each(data.data.results, function (index, val) {
                         newstuff += "<div class='event'>"
-                        newstuff += "<div class='imageevent'><img height='100px' src='" +
+                        newstuff += "<div class='image'><img height='100px' src='" +
                             val.thumbnail.path + "." + val.thumbnail.extension + "'></div>";
                         newstuff += "<div class='eventDetail'>";
                         newstuff += "<div><span class='lbl'>Event Title: </span>" + val.title + "</div>";
