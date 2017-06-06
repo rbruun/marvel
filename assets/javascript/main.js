@@ -11,7 +11,7 @@
             mainrow.html("");
 
             $.get("https://gateway.marvel.com:443/v1/public/characters?limit=100&nameStartsWith=" + searchVal.val() + "&ts=1&apikey=d66256f365e1f2c00d8cdc9a2fb7ddc9&hash=453f059b2ec8796b0ad8b40fa4adc8cc", function (data) {
-console.log("number of heros returned: " + data.data.count);
+                console.log("number of heros returned: " + data.data.count);
                 $.each(data.data.results, function (index, val) {
 
                     let comicurl = "";
@@ -31,10 +31,39 @@ console.log("number of heros returned: " + data.data.count);
                         detailurl +
                         comicurl +
                         "</div>" +
-                        "<div class='image'><img height='100px' src='" +
+                        "<div class='image' id='" + val.id + "'><img height='100px' src='" +
                         val.thumbnail.path + "." + val.thumbnail.extension + "'></div></div>");
 
 
+                })
+            });
+            // have to do this way because the 'click' event isn't recognized for dynamically added elements
+            $(document).on("click", ".image", function () {
+    console.log("inside click event");            
+                $(".events").remove();
+                outerdiv = $(this).parent();
+
+                let newstuff = "<div class='events'>";
+
+               let apiCall = $.get("https://gateway.marvel.com:443/v1/public/characters/" + $(this).attr("id") + "/events?limit=100" + "&ts=1&apikey=d66256f365e1f2c00d8cdc9a2fb7ddc9&hash=453f059b2ec8796b0ad8b40fa4adc8cc", function (data) {
+                    if (parseInt(data.data.count) > 0) {                   
+                        $.each(data.data.results, function (index, val) {
+                            newstuff += "<div class='event'>"
+                            newstuff += "<div class='image'><img height='100px' src='" +
+                                            val.thumbnail.path + "." + val.thumbnail.extension + "'></div>";
+                            newstuff += "<div class='eventDetail'>";
+                            newstuff += "<div><span class='lbl'>Event Title: </span>" + val.title + "</div>";
+                            newstuff += "<div><span class='lbl'>Event Description: </span>" + val.description + "</div>";
+                            newstuff += "<div><span class='lbl'>Characters Involved: </span>" + val.characters.available + "</div>";
+                            newstuff += "</div></div>"
+                        });
+                    } else {
+                        newstuff += "this character has no events"
+                    }
+                });
+                apiCall.always(function () {
+                    newstuff += "</div>"
+                    outerdiv.after(newstuff);
                 })
             });
 
